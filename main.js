@@ -7,6 +7,7 @@ const colors = [
     '#795548',
 ];
 const CHANGE_COLOR_DELAY = 1000;
+let intervalId = null;
 
 const refs = {
     body: document.querySelector('body'),
@@ -24,23 +25,21 @@ function onBtnClickStart() {
     refs.startBtn.setAttribute('disabled', 'disabled');
     refs.stopBtn.removeAttribute('disabled');
     changeBodyColor(colors);
-
-    refs.stopBtn.addEventListener('click', () => {
-        refs.startBtn.removeAttribute('disabled');
-    });
+    
+    refs.stopBtn.addEventListener('click', onBtnClickStop);
 }
 
 function changeBodyColor(colors) {
     const minValue = 0;
-    const maxValye = colors.length - 1;
+    const maxValue = colors.length - 1;
 
-    const intervalId = setInterval(() => {
+    intervalId = setInterval(() => {
         refs.body.style.backgroundColor =
-            colors[randomIntegerFromInterval(minValue, maxValye)];
+            colors[randomIntegerFromInterval(minValue, maxValue)];
     }, CHANGE_COLOR_DELAY);
-
-    refs.stopBtn.addEventListener('click', () => {
-        refs.stopBtn.setAttribute('disabled', 'disabled');
-        clearInterval(intervalId);
-    });
+}
+function onBtnClickStop() {
+    refs.stopBtn.setAttribute('disabled', 'disabled');
+    refs.startBtn.removeAttribute('disabled');
+    clearInterval(intervalId);
 }
